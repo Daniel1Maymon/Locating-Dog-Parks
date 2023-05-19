@@ -5,3 +5,6 @@
 # Include the src directory, and all it's sub-directories, and it's contents :
 !/src
 !/src/*
+
+# Include the .gitignore file:
+!.gitignore
