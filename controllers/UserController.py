@@ -19,8 +19,6 @@ sys.path.append(parent_dir)
 @user_blueprint.route("/", methods=["POST"])
 def create_user():
     request_body = json.loads(request.get_data(as_text=True))
-    username = ''
-    email = ''
     if 'username' not in request_body or 'email' not in request_body:
         error_msg = {'error': 'Username or Email field is missing'}
         return make_response(jsonify(error_msg), 400)
@@ -29,5 +27,28 @@ def create_user():
     username = request_body['username']
     email = request_body['email']
      
-    reponse = UserService.add_user(username, email)
-    return jsonify(reponse)
+    response = UserService.add_user(username, email)
+    if not response:
+        error_msg = {'error': 'Email is used'}
+        return make_response(jsonify(error_msg), 409)
+        
+    return jsonify(response)
+
+@user_blueprint.route("/", methods=["GET"])
+def login():
+    request_body = json.loads(request.get_data(as_text=True))
+        
+    if 'username' not in request_body or 'email' not in request_body:
+        error_msg = {'error': 'Username or Email field is missing'}
+        return make_response(jsonify(error_msg), 400)
+    
+    username = request_body['username']
+    email = request_body['email']
+    
+    response = UserService.login(username, email=email)
+    
+    if not response:
+        error_msg = {'error': 'Email Not exists'}
+        return make_response(jsonify(error_msg), 404)
+    
+    return jsonify(response)

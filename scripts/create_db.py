@@ -34,3 +34,22 @@ my_curser = db.cursor()
 # my_curser.execute("SELECT * FROM User")
 # for x in my_curser:
 #     print(x)
+
+
+# DELETE a row
+ # DELETE FROM <TableName> WHERE <condition>
+ # <condition> = customer_id = 123
+ 
+# my_curser.execute(
+#     "DELETE FROM User WHERE email = 'daniel@gmail.com'"
+# )
+
+# db.commit()
+
+
+# Update a column in a table to be uniqe
+my_curser.execute(
+    "ALTER TABLE User ADD CONSTRAINT UC_Email UNIQUE (email)"
+)
+
+db.commit()

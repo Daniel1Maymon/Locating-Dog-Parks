@@ -9,6 +9,11 @@ my_cursor = db.cursor()
 
 
 def add_user(username, email):
+    user_exists = check_if_user_exists(email)
+
+    if user_exists:
+        return False
+
     my_cursor.execute(
         "INSERT INTO User (name, email) VALUES (%s, %s)", (username, email)
     )
@@ -26,3 +31,18 @@ def add_user(username, email):
         return new_added_user
 
     return None
+
+
+def check_if_user_exists(email):
+    my_cursor.execute(f"SELECT * FROM User WHERE email = '{email}'")
+
+    inserted_row = my_cursor.fetchone()
+
+
+    return inserted_row
+
+
+def login(username, email):
+    user_exists = check_if_user_exists(email)
+
+    return True if user_exists else False
